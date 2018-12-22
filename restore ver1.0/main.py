@@ -5,7 +5,6 @@ import psycopg2
 import os
 import datetime
 from xml.dom import minidom
-import pyautogui
 
 def create_connection():
     try:
