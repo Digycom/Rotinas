@@ -7,16 +7,19 @@ import datetime
 from xml.dom import minidom
 import time
 
-def create_connection():
+default_pwd = "159357"
+reset_pwd = " "
+
+def create_connection(pwd):
     try:
-        conn = psycopg2.connect(host="localhost", database="", port="5432", user="postgres", password="159357")
+        conn = psycopg2.connect(host="localhost", database="", port="5432", user="postgres", password=pwd)
     except:
         print("Falha ao conectar com o database")
     return conn
 
 def drop_database(create_connection, dbname):
-    print("\n==========================\nDeletando o banco de dados " + dbname + "...")
-    conn = create_connection()
+    print("Deletando o banco de dados " + dbname + "...")
+    conn = create_connection(default_pwd)
     
     query = """DROP DATABASE IF EXISTS """ + dbname + """;"""
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
@@ -26,8 +29,8 @@ def drop_database(create_connection, dbname):
     print("Banco de dados deletado.")
 
 def create_database(create_connection, dbname):
-    print("\n==========================\nCriando o banco de dados " + dbname + "...")
-    conn = create_connection()
+    print("Criando o banco de dados " + dbname + "...")
+    conn = create_connection(default_pwd)
     
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     query = """CREATE DATABASE """ + dbname + """ WITH ENCODING='UTF8' OWNER=postgres;"""
@@ -52,7 +55,7 @@ def prepare_backup_name(dbname):
     return name
 
 def set_passwd_null(create_connection):
-    conn = create_connection()
+    conn = create_connection(default_pwd)
     
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     query = """ALTER USER postgres WITH PASSWORD ' ';"""
@@ -61,7 +64,7 @@ def set_passwd_null(create_connection):
     conn.close()
 
 def reset_passwd(create_connection):
-    conn = create_connection()
+    conn = create_connection(reset_pwd)
     
     conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     query = """ALTER USER postgres WITH PASSWORD '159357';"""
@@ -69,7 +72,6 @@ def reset_passwd(create_connection):
     cur.execute(query)
     conn.close()
 
-print("==========================================================================")
 print("Iniciando o processo")
 
 # Passando o arquivo xml por nome
