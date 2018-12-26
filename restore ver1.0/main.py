@@ -7,6 +7,18 @@ import datetime
 from xml.dom import minidom
 import time
 
+def create_log():
+    now = datetime.datetime.now()
+    year = str(now.year)
+    month = str(now.month)
+    day = str(now.day)
+    hour = str(now.hour)
+    minute = str(now.minute)
+    file_name = 'C:/log_restore/LOG_' + day + '-' + month + '-' + year + '--' + hour + '-' + minute + '.txt'
+    file = open(file_name, 'w+')
+
+    return file
+
 def create_connection():
     try:
         conn = psycopg2.connect(host="localhost", database="", port="5432", user="postgres", password="159357")
@@ -57,6 +69,9 @@ print("Iniciando o processo")
 myxml = minidom.parse('all_db.xml')
 dbname = myxml.getElementsByTagName('dbname')
 
+# Chamando a função que cria o arquivo de log
+file = create_log()
+
 print("Iniciando rotina de Restore")
 for elem in dbname:
     print("=================================================")
@@ -74,4 +89,5 @@ for elem in dbname:
 
     end = time.time()
 
+    file.write("Operação do banco " + elem.attributes['name'].value + " finalizada em " + str(end - start) + "\n")
     print("Operação finalizada em " + str(end - start))
