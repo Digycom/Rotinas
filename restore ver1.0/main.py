@@ -95,4 +95,4 @@ for elem in dbname:
 
     end = time.time()
 
-    print("Operação finalizada em " + (end - start))
+    print("Operação finalizada em " + str(end - start))
