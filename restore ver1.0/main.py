@@ -5,6 +5,7 @@ import psycopg2
 import os
 import datetime
 from xml.dom import minidom
+import time
 
 def create_connection():
     try:
@@ -79,6 +80,9 @@ print("Iniciando rotina de Restore")
 for elem in dbname:
     print("=================================================")
     print("Iniciando operação no banco " + elem.attributes['name'].value)
+
+    start = time.time()
+
     dbname = str(elem.attributes['name'].value)
     backup_file_name = prepare_backup_name(dbname)
 
@@ -88,3 +92,7 @@ for elem in dbname:
     set_passwd_null(create_connection)
     restore_database(dbname, backup_file_name)
     reset_passwd(create_connection)
+
+    end = time.time()
+
+    print("Operação finalizada em " + (end - start))
