@@ -11,7 +11,11 @@ def create_log():
     now = datetime.datetime.now()
     year = str(now.year)
     month = str(now.month)
+    if len(month) == 1:
+        month = '0' + month
     day = str(now.day)
+    if len(day) == 1:
+        month = '0' + month
     hour = str(now.hour)
     minute = str(now.minute)
     file_name = 'C:/log_restore/LOG_' + day + '-' + month + '-' + year + '--' + hour + '-' + minute + '.txt'
@@ -50,7 +54,7 @@ def create_database(create_connection, dbname):
     
 def restore_database(dbname, backup_file_name):
     print("Restaurando o backup do arquivo " + backup_file_name + "...")
-    cmd = """pg_restore.exe --host localhost --port 5432 --username postgres --dbname """ + dbname + """ ./bkps/""" + backup_file_name
+    cmd = """pg_restore.exe --host localhost --port 5432 --username postgres --dbname """ + dbname + """ D:/BKP_TOPCAR/""" + backup_file_name
     returned_value = os.system(cmd)
     print('returned value:', returned_value)
 
