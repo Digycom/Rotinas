@@ -11,14 +11,16 @@ def create_log():
     now = datetime.datetime.now()
     year = str(now.year)
     month = str(now.month)
+    day = str(now.day)
+
     if len(month) == 1:
         month = '0' + month
-    day = str(now.day)
     if len(day) == 1:
-        month = '0' + month
+        day = '0' + day
+
     hour = str(now.hour)
     minute = str(now.minute)
-    file_name = 'C:/log_restore/LOG_' + day + '-' + month + '-' + year + '--' + hour + '-' + minute + '.txt'
+    file_name = r'C:/log_restore/LOG_' + day + '-' + month + '-' + year + '--' + hour + '-' + minute + '.txt'
     file = open(file_name, 'w+')
 
     return file
@@ -63,6 +65,12 @@ def prepare_backup_name(dbname):
     year = str(now.year)
     month = str(now.month)
     day = str(now.day)
+
+    if len(month) == 1:
+        month = '0' + month
+    if len(day) == 1:
+        day = '0' + day
+
     name = dbname + "__" + year + "_" + month + "_" + day + ".backup"
 
     return name
